@@ -1,0 +1,10 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/logo.svg";
+import TipCalculator from "./TipCalculator.vue";
+---
+
+<div class="flex h-full w-full flex-col gap-12 pt-12">
+  <Image src={logo} alt="Tip Calculator" class="self-center" />
+  <TipCalculator client:load />
+</div>
