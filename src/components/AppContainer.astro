@@ -4,7 +4,9 @@ import logo from "../assets/logo.svg";
 import TipCalculator from "./TipCalculator.vue";
 ---
 
-<div class="flex h-full w-full flex-col gap-12 pt-12">
+<div
+  class="flex min-h-screen w-full flex-col items-center justify-between gap-12 pt-12 lg:justify-center lg:pt-0"
+>
   <Image src={logo} alt="Tip Calculator" class="self-center" />
   <TipCalculator client:load />
 </div>

@@ -2,35 +2,34 @@
 import { computed } from "vue";
 
 const props = defineProps<{
-  bill: string;
-  tipPercent: string;
-  customTip: string;
-  people: string;
+  bill: number | "";
+  tipPercent: number;
+  customTip: number | "";
+  people: number | "";
+}>();
+
+defineEmits<{
+  reset: [];
 }>();
 
 function chooseTipPercent(): number {
-  const tip = parseFloat(props.tipPercent);
-  const custom = parseFloat(props.customTip);
-  return isNaN(custom) ? tip : custom;
+  return props.customTip === "" ? props.tipPercent : props.customTip;
 }
 
 const error = computed(() => {
-  const bill = parseFloat(props.bill);
-  const people = parseFloat(props.people);
-
   // If bill or people is NaN, return true.
   // Both bill and people must be numbers, and people must be greater than 0 (bill can be $0 tho).
-  if (isNaN(bill) || isNaN(people) || bill < 0 || people <= 0) {
-    return true;
-  }
-
-  // If chosen tip percent is NaN, return ERROR.
-  if (isNaN(chooseTipPercent())) {
+  if (
+    props.bill === "" ||
+    props.people === "" ||
+    props.bill < 0 ||
+    props.people <= 0
+  ) {
     return true;
   }
 
   // If people is a floting point number, return ERROR.
-  if (!Number.isInteger(people)) {
+  if (!Number.isInteger(props.people)) {
     return true;
   }
 
@@ -39,32 +38,19 @@ const error = computed(() => {
 });
 
 const result = computed(() => {
-  const bill = parseFloat(props.bill);
-  const people = parseInt(props.people);
-
-  if (error) {
+  if (error.value) {
     return {
-      tipPer: 0,
-      totalPer: 0,
+      tipPer: "0.00",
+      totalPer: "0.00",
     };
   }
+
+  const bill = props.bill as number;
+  const people = props.people as number;
 
   const tipPercent = chooseTipPercent();
   const tipAmount = bill * (tipPercent / 100);
   const totalAmount = bill + tipAmount;
-
-  console.log(
-    "Calculating bill",
-    bill,
-    "between",
-    people,
-    "people with a tip of",
-    tipPercent,
-    "percent to tipping",
-    tipAmount,
-    "and totaling",
-    totalAmount,
-  );
 
   return {
     tipPer: (tipAmount / people).toFixed(2),
@@ -74,27 +60,38 @@ const result = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-7 rounded-2xl bg-neutral-dark-cyan p-6 pt-10">
-    <div class="flex flex-row items-center justify-between">
-      <div class="flex h-full flex-col">
-        <span class="text-white">Tip Amount</span>
-        <span class="text-sm text-neutral-gray-cyan">/ person</span>
+  <div
+    class="flex w-full flex-col justify-between rounded-2xl bg-neutral-dark-cyan p-6 pt-10"
+  >
+    <div class="flex flex-col gap-7">
+      <div class="flex flex-row items-center justify-between">
+        <div class="flex h-full flex-col">
+          <span class="text-white">Tip Amount</span>
+          <span class="text-sm text-neutral-gray-cyan">/ person</span>
+        </div>
+
+        <span class="text-[2rem] text-primary-cyan">
+          {{ `$${result.tipPer}` }}
+        </span>
       </div>
 
-      <span class="text-[2rem] text-primary-cyan">
-        {{ error ? "$0.00" : `$${result.tipPer}` }}
-      </span>
-    </div>
+      <div class="flex flex-row items-center justify-between">
+        <div class="flex h-full flex-col">
+          <span class="text-white">Total</span>
+          <span class="text-sm text-neutral-gray-cyan">/ person</span>
+        </div>
 
-    <div class="flex flex-row items-center justify-between">
-      <div class="flex h-full flex-col">
-        <span class="text-white">Total</span>
-        <span class="text-sm text-neutral-gray-cyan">/ person</span>
+        <span class="text-[2rem] text-primary-cyan">
+          {{ `$${result.totalPer}` }}
+        </span>
       </div>
-
-      <span class="text-[2rem] text-primary-cyan">
-        {{ error ? "$0.00" : `$${result.totalPer}` }}
-      </span>
     </div>
+
+    <button
+      class="h-12 w-full rounded-md bg-primary-cyan text-center text-xl text-neutral-dark-cyan hover:bg-neutral-bright-cyan"
+      @click.prevent="$emit('reset')"
+    >
+      RESET
+    </button>
   </div>
 </template>
