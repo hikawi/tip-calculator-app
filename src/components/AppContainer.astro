@@ -8,3 +8,16 @@ import TipCalculator from "./TipCalculator.vue";
   <Image src={logo} alt="Tip Calculator" class="self-center" />
   <TipCalculator client:load />
 </div>
+
+<style is:global>
+  /* Remove the arrows thing to increase or decrease the number. */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    appearance: textfield;
+  }
+</style>
