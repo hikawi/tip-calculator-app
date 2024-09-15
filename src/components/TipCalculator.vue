@@ -26,7 +26,7 @@ function reset() {
 
 <template>
   <div
-    class="flex flex-col gap-8 rounded-none rounded-t-3xl bg-white p-8 text-neutral-dark-gray-cyan lg:w-[57.5rem] lg:flex-row lg:gap-12 lg:rounded-3xl lg:p-12"
+    class="flex flex-col gap-8 rounded-none rounded-t-3xl bg-white p-8 text-neutral-dark-gray-cyan shadow-lg lg:w-[57.5rem] lg:flex-row lg:gap-12 lg:rounded-3xl lg:p-12"
   >
     <div class="flex w-full flex-col gap-8">
       <BillInput v-model="bill" />

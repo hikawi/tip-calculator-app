@@ -57,11 +57,21 @@ const result = computed(() => {
     totalPer: (totalAmount / people).toFixed(2),
   };
 });
+
+// The reset button should be disabled if no input has been entered.
+const resetDisabled = computed(() => {
+  return (
+    props.bill === "" &&
+    props.tipPercent === 0 &&
+    props.customTip === "" &&
+    props.people === ""
+  );
+});
 </script>
 
 <template>
   <div
-    class="flex w-full flex-col justify-between rounded-2xl bg-neutral-dark-cyan p-6 pt-10"
+    class="flex w-full flex-col justify-between gap-8 rounded-2xl bg-neutral-dark-cyan p-6 pt-10"
   >
     <div class="flex flex-col gap-7">
       <div class="flex flex-row items-center justify-between">
@@ -70,7 +80,7 @@ const result = computed(() => {
           <span class="text-sm text-neutral-gray-cyan">/ person</span>
         </div>
 
-        <span class="text-[2rem] text-primary-cyan">
+        <span class="text-[2rem] text-primary-cyan lg:text-5xl">
           {{ `$${result.tipPer}` }}
         </span>
       </div>
@@ -81,14 +91,15 @@ const result = computed(() => {
           <span class="text-sm text-neutral-gray-cyan">/ person</span>
         </div>
 
-        <span class="text-[2rem] text-primary-cyan">
+        <span class="text-[2rem] text-primary-cyan lg:text-5xl">
           {{ `$${result.totalPer}` }}
         </span>
       </div>
     </div>
 
     <button
-      class="h-12 w-full rounded-md bg-primary-cyan text-center text-xl text-neutral-dark-cyan hover:bg-neutral-bright-cyan"
+      class="disabled:bg-neutral-disabled-cyan h-12 w-full rounded-md bg-primary-cyan text-center text-xl text-neutral-dark-cyan hover:bg-neutral-bright-cyan disabled:cursor-not-allowed disabled:hover:transition-none"
+      :disabled="resetDisabled"
       @click.prevent="$emit('reset')"
     >
       RESET

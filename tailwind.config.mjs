@@ -15,6 +15,7 @@ export default {
           "light-gray-cyan": "hsl(185, 41%, 84%)",
           "bright-cyan": "hsla(172, 61%, 77%, 1)",
           "lighter-gray-cyan": "hsl(189, 41%, 97%)",
+          "disabled-cyan": "hsla(183, 78%, 24%, 1)",
         },
       },
       fontFamily: {
